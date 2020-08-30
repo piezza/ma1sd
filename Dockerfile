@@ -1,3 +1,9 @@
+FROM gradle:jdk8 as builder
+
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle assemble
+
 FROM openjdk:8-jre-alpine
 
 RUN apk update && apk add bash && rm -rf /var/lib/apk/* /var/cache/apk/*
@@ -15,4 +21,4 @@ CMD [ "/start.sh" ]
 
 ADD src/docker/start.sh /start.sh
 ADD src/script/ma1sd /app/ma1sd
-ADD build/libs/ma1sd.jar /app/ma1sd.jar
+COPY --from=builder /home/gradle/src/build/libs/ma1sd.jar /app
