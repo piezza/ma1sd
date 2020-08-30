@@ -59,7 +59,7 @@ String ma1sdVersion() {
     if (version == null || version.size() == 0) {
         version = gitVersion()
     }
-    return versionPattern.matcher(version).matches() ? version.substring(1) : version
+    return versionPattern.matcher(version).matches() ? version.substring(1).trim() : version.trim()
 }
 
 String gitVersion() {
